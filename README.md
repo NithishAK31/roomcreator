@@ -52,3 +52,26 @@ Interactive Editing
 - Automatic furniture placement
 - Multi-floor support
 - 3D visualization
+
+## Architecture Diagram
+User
+
+↓
+
+Parser
+
+↓
+
+Requirement Object
+
+↓
+
+Layout Generator
+
+↓
+
+Canvas Renderer
+
+↓
+
+Blueprint
