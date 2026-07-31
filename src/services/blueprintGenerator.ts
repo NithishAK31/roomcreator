@@ -46,22 +46,72 @@ const generateId = (): string => {
 
 // Extract requirements from user input text
 const extractRequirements = (text: string): any => {
-  // Extract structured room requirements from natural language input.
-  const landArea = text.match(/(\d+)\s*(?:sq\.?\s*(?:ft|m)|square\s*(?:feet|meters))/i);
-  const bedrooms = text.match(/(\d+)\s*(?:bed(?:room)?s?)/i);
-  const bathrooms = text.match(/(\d+)\s*(?:bath(?:room)?s?)/i);
-  const kitchen = text.match(/(\d+)\s*(?:kitchen)/i);
-  const living = text.match(/(?:living|lounge|family)\s*(?:room|area|space)/i);
-  const dining = text.match(/(?:dining)\s*(?:room|area|space)/i);
-  
-  // Extract dimensions if provided
-  const dimensions = text.match(/(\d+)\s*(?:x|by)\s*(\d+)/i);
-  
+  // Normalize text
+  let processedText = text.toLowerCase();
+
+  // Convert number words to digits
+  const numberWords: Record<string, string> = {
+    one: "1",
+    two: "2",
+    three: "3",
+    four: "4",
+    five: "5",
+    six: "6",
+    seven: "7",
+    eight: "8",
+    nine: "9",
+    ten: "10",
+  };
+
+  Object.entries(numberWords).forEach(([word, number]) => {
+    processedText = processedText.replace(
+      new RegExp(`\\b${word}\\b`, "g"),
+      number
+    );
+  });
+
+  const landArea = processedText.match(
+    /(\d+)\s*(?:sq\.?\s*(?:ft|m)|square\s*(?:feet|meters))/i
+  );
+
+  const bedrooms = processedText.match(
+    /(\d+)\s*(?:bed(?:room)?s?|master bedroom|guest room)/i
+  );
+
+  const bathrooms = processedText.match(
+    /(\d+)\s*(?:bath(?:room)?s?|washroom|toilet)/i
+  );
+
+  const kitchen = processedText.match(
+    /(\d+)\s*(?:kitchen|pantry)/i
+  );
+
+  const living = processedText.match(
+    /(?:living|lounge|family|hall)\s*(?:room|area|space)?/i
+  );
+
+  const dining = processedText.match(
+    /(?:dining)\s*(?:room|area|space)?/i
+  );
+
+  const dimensions = processedText.match(
+    /(\d+)\s*(?:x|by)\s*(\d+)/i
+  );
+
   return {
     landArea: landArea ? parseInt(landArea[1]) : 2000,
-    bedrooms: bedrooms ? parseInt(bedrooms[1]) : 2,
-    bathrooms: bathrooms ? parseInt(bathrooms[1]) : 2,
-    kitchen: kitchen ? parseInt(kitchen[1]) : 1,
+    bedrooms: Math.min(
+      Math.max(bedrooms ? parseInt(bedrooms[1]) : 2, 1),
+      8
+    ),
+    bathrooms: Math.min(
+      Math.max(bathrooms ? parseInt(bathrooms[1]) : 2, 1),
+      5
+    ),
+    kitchen: Math.min(
+      Math.max(kitchen ? parseInt(kitchen[1]) : 1, 1),
+      2
+    ),
     living: living ? 1 : 0,
     dining: dining ? 1 : 0,
     width: dimensions ? parseInt(dimensions[1]) : 50,
