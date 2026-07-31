@@ -30,7 +30,10 @@ const Generate = () => {
 
   const handleGenerate = async () => {
     if (!requirements.trim()) {
-      setError("Please enter your requirements");
+      setError(
+        "Please describe your house requirements.\nExample:\n2 Bedrooms\n1 Kitchen\n1 Bathroom\nLiving Room"
+      );
+      toast.error("Room requirements cannot be empty.");
       return;
     }
 
@@ -170,7 +173,7 @@ const Generate = () => {
                   disabled={isLoading || !canGenerate}
                 >
                   {isLoading ? (
-                    <>Generating...</>
+                    <>Analyzing room requirements...</>
                   ) : (
                     <>
                       <Wand2 className="mr-2 h-4 w-4" />
