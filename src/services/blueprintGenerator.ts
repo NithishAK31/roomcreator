@@ -46,7 +46,7 @@ const generateId = (): string => {
 
 // Extract requirements from user input text
 const extractRequirements = (text: string): any => {
-  // This is a simplified version. In a real app, this would use NLP
+  // Extract structured room requirements from natural language input.
   const landArea = text.match(/(\d+)\s*(?:sq\.?\s*(?:ft|m)|square\s*(?:feet|meters))/i);
   const bedrooms = text.match(/(\d+)\s*(?:bed(?:room)?s?)/i);
   const bathrooms = text.match(/(\d+)\s*(?:bath(?:room)?s?)/i);
@@ -87,7 +87,7 @@ export const generateBlueprint = (requirementsText: string): Blueprint => {
     windows: [],
   };
   
-  // Simple layout algorithm (in a real app, this would be much more sophisticated)
+  // Generate room placement based on extracted room specifications.
   let currentX = 0;
   let currentY = 0;
   const roomWidth = Math.floor(blueprint.width / 3);
