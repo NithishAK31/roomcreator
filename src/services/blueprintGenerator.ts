@@ -124,7 +124,8 @@ export const generateBlueprint = (requirementsText: string): Blueprint => {
     throw new Error(
       "Unable to understand your room requirements. Please enter a valid description."
     );
-  
+  }
+
   // Calculate total room count
   const totalRooms = requirements.bedrooms + requirements.bathrooms + requirements.kitchen + 
                     requirements.living + requirements.dining;
