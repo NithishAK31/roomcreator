@@ -99,29 +99,31 @@ const extractRequirements = (text: string): any => {
   );
 
   return {
-    landArea: landArea ? parseInt(landArea[1]) : 2000,
-    bedrooms: Math.min(
-      Math.max(bedrooms ? parseInt(bedrooms[1]) : 2, 1),
-      8
-    ),
-    bathrooms: Math.min(
-      Math.max(bathrooms ? parseInt(bathrooms[1]) : 2, 1),
-      5
-    ),
-    kitchen: Math.min(
-      Math.max(kitchen ? parseInt(kitchen[1]) : 1, 1),
-      2
-    ),
-    living: living ? 1 : 0,
-    dining: dining ? 1 : 0,
-    width: dimensions ? parseInt(dimensions[1]) : 50,
-    height: dimensions ? parseInt(dimensions[2]) : 40,
-  };
+  landArea: landArea ? parseInt(landArea[1]) : 2000,
+  bedrooms: bedrooms ? Math.min(parseInt(bedrooms[1]), 8) : 0,
+  bathrooms: bathrooms ? Math.min(parseInt(bathrooms[1]), 5) : 0,
+  kitchen: kitchen ? Math.min(parseInt(kitchen[1]), 2) : 0,
+  living: living ? 1 : 0,
+  dining: dining ? 1 : 0,
+  width: dimensions ? parseInt(dimensions[1]) : 50,
+  height: dimensions ? parseInt(dimensions[2]) : 40,
+};
 };
 
 // Generate a blueprint based on requirements
 export const generateBlueprint = (requirementsText: string): Blueprint => {
   const requirements = extractRequirements(requirementsText);
+
+  if (
+    requirements.bedrooms === 0 &&
+    requirements.bathrooms === 0 &&
+    requirements.kitchen === 0 &&
+    requirements.living === 0 &&
+    requirements.dining === 0
+  ) {
+    throw new Error(
+      "Unable to understand your room requirements. Please enter a valid description."
+    );
   
   // Calculate total room count
   const totalRooms = requirements.bedrooms + requirements.bathrooms + requirements.kitchen + 
