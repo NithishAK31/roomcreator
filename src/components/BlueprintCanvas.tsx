@@ -15,6 +15,7 @@ import { toast } from "sonner";
 interface BlueprintCanvasProps {
   blueprint: Blueprint;
   editable?: boolean;
+  previewMode?: boolean;
   onSave?: (blueprint: Blueprint) => void;
 }
 
